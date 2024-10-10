@@ -115,6 +115,11 @@ jobs:
           mkdir extracted
           tar -xzvf ./tars/rosu_pp_js_nodejs.tar.gz -C ./extracted
 
+      - name: Change name of package
+        run: |
+          cd extracted
+          sed -i 's/"name": "rosu-pp-js"/"name": "@kotrikd\/rosu-pp"/' package.json
+
       - name: Publish
         uses: JS-DevTools/npm-publish@v3
         with:
