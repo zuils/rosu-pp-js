@@ -370,10 +370,11 @@ export class BeatmapAttributes {
 */
   readonly od: number;
 /**
-* Hit window for overall difficulty i.e. time to hit a 300 ("Great") in
-* milliseconds.
 */
-  readonly odHitWindow: number;
+  readonly odGreatHitwindow: number;
+/**
+*/
+  readonly odOkHitwindow: number | undefined;
 }
 /**
 */
@@ -523,6 +524,10 @@ export class DifficultyAttributes {
 */
   readonly aim: number | undefined;
 /**
+* Only available for osu!.
+*/
+  readonly aimDifficultStrainCount: number | undefined;
+/**
 * The approach rate.
 *
 * Only available for osu! and osu!catch.
@@ -541,10 +546,14 @@ export class DifficultyAttributes {
 */
   readonly flashlight: number | undefined;
 /**
+* Only available for osu!taiko.
+*/
+  readonly greatHitWindow: number | undefined;
+/**
 * The perceived hit window for an n300 inclusive of rate-adjusting mods
 * (DT/HT/etc)
 *
-* Only available for osu!taiko and osu!mania.
+* Only available for osu!mania.
 */
   readonly hitWindow: number | undefined;
 /**
@@ -614,6 +623,10 @@ export class DifficultyAttributes {
 */
   readonly od: number | undefined;
 /**
+* Only available for osu!taiko.
+*/
+  readonly okHitWindow: number | undefined;
+/**
 * The difficulty of the hardest parts of the map.
 *
 * Only available for osu!taiko.
@@ -637,6 +650,10 @@ export class DifficultyAttributes {
 * Only available for osu!.
 */
   readonly speed: number | undefined;
+/**
+* Only available for osu!.
+*/
+  readonly speedDifficultStrainCount: number | undefined;
 /**
 * The number of clickable objects weighted by difficulty.
 *
@@ -834,6 +851,9 @@ export class PerformanceAttributes {
 * Only available for osu! and osu!taiko.
 */
   readonly effectiveMissCount: number | undefined;
+/**
+*/
+  readonly estimatedUnstableRate: number | undefined;
 /**
 * The final performance points.
 */

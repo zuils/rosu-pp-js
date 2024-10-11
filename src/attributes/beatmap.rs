@@ -139,10 +139,11 @@ pub struct JsBeatmapAttributes {
     /// Hit window for approach rate i.e. TimePreempt in milliseconds.
     #[wasm_bindgen(js_name = "arHitWindow", readonly)]
     pub ar_hitwindow: f64,
-    /// Hit window for overall difficulty i.e. time to hit a 300 ("Great") in
-    /// milliseconds.
-    #[wasm_bindgen(js_name = "odHitWindow", readonly)]
-    pub od_hitwindow: f64,
+
+    #[wasm_bindgen(js_name = "odGreatHitwindow", readonly)]
+    pub od_great_hitwindow: f64,
+    #[wasm_bindgen(js_name = "odOkHitwindow", readonly)]
+    pub od_ok_hitwindow: Option<f64>,
 }
 
 impl From<BeatmapAttributes> for JsBeatmapAttributes {
@@ -154,7 +155,8 @@ impl From<BeatmapAttributes> for JsBeatmapAttributes {
             hp: attrs.hp,
             clock_rate: attrs.clock_rate,
             ar_hitwindow: attrs.hit_windows.ar,
-            od_hitwindow: attrs.hit_windows.od,
+            od_great_hitwindow: attrs.hit_windows.od_great,
+            od_ok_hitwindow: attrs.hit_windows.od_ok,
         }
     }
 }

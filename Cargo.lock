@@ -80,7 +80,7 @@ dependencies = [
 [[package]]
 name = "rosu-pp"
 version = "1.1.0"
-source = "git+https://github.com/MaxOhn/rosu-pp?branch=pp-update#092cf34eb464e2eea21fafaafc4d922ba469bf7b"
+source = "git+https://github.com/MaxOhn/rosu-pp?branch=pp-update#b33e259afeaad5ee972f513601ffd26df4df3ff5"
 dependencies = [
  "rosu-map",
  "rosu-mods",
@@ -88,7 +88,7 @@ dependencies = [
 
 [[package]]
 name = "rosu-pp-js"
-version = "1.2.0"
+version = "1.2.1"
 dependencies = [
  "js-sys",
  "rosu-mods",
