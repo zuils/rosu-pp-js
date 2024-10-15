@@ -60,11 +60,22 @@ pub struct JsDifficultyAttributes {
     /// Only available for osu!.
     #[wasm_bindgen(js_name = "nCircles", readonly)]
     pub n_circles: Option<u32>,
+    /// Only available for osu!.
+    #[wasm_bindgen(js_name = "aimDifficultStrainCount", readonly)]
+    pub aim_difficult_strain_count: Option<f64>,
+    /// Only available for osu!.
+    #[wasm_bindgen(js_name = "speedDifficultStrainCount", readonly)]
+    pub speed_difficult_strain_count: Option<f64>,
     /// The amount of sliders.
     ///
     /// Only available for osu!.
     #[wasm_bindgen(js_name = "nSliders", readonly)]
     pub n_sliders: Option<u32>,
+    /// The amount of sliders ticks.
+    ///
+    /// Only available for osu!.
+    #[wasm_bindgen(js_name = "nSliderTicks", readonly)]
+    pub n_slider_ticks: Option<u32>,
     /// The amount of spinners.
     ///
     /// Only available for osu!.
@@ -118,9 +129,15 @@ pub struct JsDifficultyAttributes {
     /// The perceived hit window for an n300 inclusive of rate-adjusting mods
     /// (DT/HT/etc)
     ///
-    /// Only available for osu!taiko and osu!mania.
+    /// Only available for osu!mania.
     #[wasm_bindgen(js_name = "hitWindow", readonly)]
     pub hit_window: Option<f64>,
+    /// Only available for osu!taiko.
+    #[wasm_bindgen(js_name = "okHitWindow", readonly)]
+    pub ok_hit_window: Option<f64>,
+    /// Only available for osu!taiko.
+    #[wasm_bindgen(js_name = "greatHitWindow", readonly)]
+    pub great_hit_window: Option<f64>,
     /// Return the maximum combo.
     #[wasm_bindgen(js_name = "maxCombo", readonly)]
     pub max_combo: u32,
@@ -139,9 +156,12 @@ impl From<OsuDifficultyAttributes> for JsDifficultyAttributes {
             hp,
             n_circles,
             n_sliders,
+            n_slider_ticks,
             n_spinners,
             stars,
             max_combo,
+            aim_difficult_strain_count,
+            speed_difficult_strain_count
         } = attrs;
 
         Self {
@@ -158,7 +178,10 @@ impl From<OsuDifficultyAttributes> for JsDifficultyAttributes {
             hp: Some(hp),
             n_circles: Some(n_circles),
             n_sliders: Some(n_sliders),
+            n_slider_ticks: Some(n_slider_ticks),
             n_spinners: Some(n_spinners),
+            aim_difficult_strain_count: Some(aim_difficult_strain_count),
+            speed_difficult_strain_count: Some(speed_difficult_strain_count),
             max_combo,
             ..Self::default()
         }
@@ -172,10 +195,11 @@ impl From<TaikoDifficultyAttributes> for JsDifficultyAttributes {
             rhythm,
             color,
             peak,
-            hit_window,
             stars,
             max_combo,
             is_convert,
+            great_hit_window,
+            ok_hit_window
         } = attrs;
 
         Self {
@@ -186,7 +210,8 @@ impl From<TaikoDifficultyAttributes> for JsDifficultyAttributes {
             rhythm: Some(rhythm),
             color: Some(color),
             peak: Some(peak),
-            hit_window: Some(hit_window),
+            great_hit_window: Some(great_hit_window),
+            ok_hit_window: Some(ok_hit_window),
             max_combo,
             ..Self::default()
         }
@@ -270,6 +295,7 @@ impl TryFrom<JsDifficultyAttributes> for DifficultyAttributes {
             hp,
             n_circles,
             n_sliders,
+            n_slider_ticks,
             n_spinners,
             stamina,
             rhythm,
@@ -281,7 +307,11 @@ impl TryFrom<JsDifficultyAttributes> for DifficultyAttributes {
             n_objects,
             ar,
             hit_window,
-            max_combo,
+            max_combo, 
+            aim_difficult_strain_count, 
+            speed_difficult_strain_count, 
+            ok_hit_window, 
+            great_hit_window 
         } = attrs;
 
         match mode {
@@ -297,7 +327,10 @@ impl TryFrom<JsDifficultyAttributes> for DifficultyAttributes {
                     Some(hp),
                     Some(n_circles),
                     Some(n_sliders),
+                    Some(n_slider_ticks),
                     Some(n_spinners),
+                    Some(aim_difficult_strain_count),
+                    Some(speed_difficult_strain_count)
                 ) = (
                     aim,
                     speed,
@@ -309,7 +342,10 @@ impl TryFrom<JsDifficultyAttributes> for DifficultyAttributes {
                     hp,
                     n_circles,
                     n_sliders,
+                    n_slider_ticks,
                     n_spinners,
+                    aim_difficult_strain_count,
+                    speed_difficult_strain_count
                 ) {
                     return Ok(Self::Osu(OsuDifficultyAttributes {
                         aim,
@@ -322,25 +358,29 @@ impl TryFrom<JsDifficultyAttributes> for DifficultyAttributes {
                         hp,
                         n_circles,
                         n_sliders,
+                        n_slider_ticks,
                         n_spinners,
                         stars,
                         max_combo,
+                        aim_difficult_strain_count,
+                        speed_difficult_strain_count,
                     }));
                 }
             }
             JsGameMode::Taiko => {
-                if let (Some(stamina), Some(rhythm), Some(color), Some(peak), Some(hit_window)) =
-                    (stamina, rhythm, color, peak, hit_window)
+                if let (Some(stamina), Some(rhythm), Some(color), Some(peak), Some(great_hit_window), Some(ok_hit_window)) =
+                    (stamina, rhythm, color, peak, great_hit_window, ok_hit_window)
                 {
                     return Ok(Self::Taiko(TaikoDifficultyAttributes {
                         stamina,
                         rhythm,
                         color,
                         peak,
-                        hit_window,
                         stars,
                         max_combo,
                         is_convert,
+                        great_hit_window,
+                        ok_hit_window,
                     }));
                 }
             }

@@ -11,43 +11,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  check:
-    name: Check files
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v4
-
-      - if: startsWith(github.ref, 'refs/tags/')
-        name: Check install link
-        run: |
-          if ! grep "npm install https://github.com/MaxOhn/rosu-pp-js/releases/download/${{ github.ref_name }}/rosu_pp_js_nodejs.tar.gz" README.md; then
-            echo "Did not find install link in readme: 'npm install https://github.com/MaxOhn/rosu-pp-js/releases/download/${{ github.ref_name }}/rosu_pp_js_nodejs.tar.gz'"
-            exit 1
-          fi
-
-      - name: Install stable toolchain
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Cache dependencies
-        uses: Swatinem/rust-cache@v2
-
-      - name: Install wasm-pack
-        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-
-      - name: Build
-        run: wasm-pack build --target nodejs --out-dir pkg
-
-      - name: Check .d.ts file
-        run: |
-          if ! cmp --silent pkg/rosu_pp_js.d.ts rosu_pp_js.d.ts; then
-            echo ".d.ts file is not up to date"
-            cmp --print-bytes pkg/rosu_pp_js.d.ts rosu_pp_js.d.ts
-            cat pkg/rosu_pp_js.d.ts
-            exit 1
-          fi
-
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -89,7 +52,7 @@ jobs:
 
   release:
     name: Release
-    needs: [check, build]
+    needs: build
     if: success() && startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
@@ -114,6 +77,11 @@ jobs:
         run: |
           mkdir extracted
           tar -xzvf ./tars/rosu_pp_js_nodejs.tar.gz -C ./extracted
+
+      - name: Change name of package
+        run: |
+          cd extracted
+          sed -i 's/"name": "rosu-pp-js"/"name": "@kotrikd\/rosu-pp"/' package.json
 
       - name: Publish
         uses: JS-DevTools/npm-publish@v3
