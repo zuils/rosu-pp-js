@@ -49,7 +49,11 @@ impl JsPerformance {
             MapOrAttrs::Map(map_) => {
                 map = map_;
 
-                Performance::new(&map.inner)
+                if self.args.lazer {
+                  Performance::new(&map.inner).lazer(true)
+                } else {
+                  Performance::new(&map.inner).lazer(false)
+                }
             }
             MapOrAttrs::Attrs(attrs) => Performance::new(attrs),
         };
@@ -143,6 +147,16 @@ impl JsPerformance {
         self.args.n_geki = n_geki;
     }
 
+    #[wasm_bindgen(setter = SliderTickHits)]
+    pub fn set_slider_tick_hits(&mut self, slider_tick_hits: Option<u32>) {
+        self.args.slider_tick_hits = slider_tick_hits;
+    }
+
+    #[wasm_bindgen(setter = SliderEndHits)]
+    pub fn set_slider_end_hits(&mut self, slider_end_hits: Option<u32>) {
+        self.args.slider_end_hits = slider_end_hits;
+    }
+
     #[wasm_bindgen(setter = nKatu)]
     pub fn set_n_katu(&mut self, n_katu: Option<u32>) {
         self.args.n_katu = n_katu;
@@ -166,6 +180,11 @@ impl JsPerformance {
     #[wasm_bindgen(setter)]
     pub fn set_misses(&mut self, misses: Option<u32>) {
         self.args.misses = misses;
+    }
+
+    #[wasm_bindgen(setter)]
+    pub fn set_lazer(&mut self, lazer: bool) {
+        self.args.lazer = lazer;
     }
 
     #[wasm_bindgen(setter = hitresultPriority)]
