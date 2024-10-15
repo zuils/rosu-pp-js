@@ -40,6 +40,18 @@ export interface PerformanceArgs extends DifficultyArgs {
     */
     combo?: number;
     /**
+    * Amount of successfully hit slider ticks and repeats.
+    *
+    * Only relevant for osu!standard in lazer.
+    */
+    sliderTickHits?: number;
+    /**
+    * Amount of successfully hit slider ends.
+    *
+    * Only relevant for osu!standard in lazer.
+    */
+    sliderEndHits?: number;
+    /**
     * Specify the amount of gekis of a play.
     *
     * Only relevant for osu!mania for which it repesents the amount of n320.
@@ -76,6 +88,15 @@ export interface PerformanceArgs extends DifficultyArgs {
     * Defaults to `HitResultPriority.BestCase`.
     */
     hitresultPriority?: HitResultPriority;
+    /**
+    * Whether the calculated attributes belong to an osu!lazer or osu!stable
+    *
+    * This affects internal accuracy calculation because lazer considers
+    * slider heads for accuracy whereas stable does not.
+    *
+    * Only relevant for osu!standard.
+    */
+    lazer?: boolean;
 }"#;
 
 #[derive(Default, serde::Deserialize)]
@@ -100,6 +121,8 @@ pub struct PerformanceArgs {
     pub hardrock_offsets: Option<bool>,
     pub accuracy: Option<f64>,
     pub combo: Option<u32>,
+    pub slider_tick_hits: Option<u32>,
+    pub slider_end_hits: Option<u32>,
     pub n_geki: Option<u32>,
     pub n_katu: Option<u32>,
     pub n300: Option<u32>,
@@ -108,6 +131,8 @@ pub struct PerformanceArgs {
     pub misses: Option<u32>,
     #[serde(default, deserialize_with = "JsHitResultPriority::deserialize")]
     pub hitresult_priority: HitResultPriority,
+    #[serde(default)]
+    pub lazer: bool,
 }
 
 /// While generating remaining hitresults, decide how they should be distributed.
@@ -173,6 +198,12 @@ impl PerformanceArgs {
 
         if let Some(misses) = self.misses {
             perf = perf.misses(misses);
+        }
+
+        if self.lazer {
+            perf = perf.lazer(true);
+        } else {
+            perf = perf.lazer(false);
         }
 
         let difficulty = DifficultyArgs {
