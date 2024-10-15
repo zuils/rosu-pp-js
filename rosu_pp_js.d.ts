@@ -174,6 +174,18 @@ export interface PerformanceArgs extends DifficultyArgs {
     */
     combo?: number;
     /**
+    * Amount of successfully hit slider ticks and repeats.
+    *
+    * Only relevant for osu!standard in lazer.
+    */
+    sliderTickHits?: number;
+    /**
+    * Amount of successfully hit slider ends.
+    *
+    * Only relevant for osu!standard in lazer.
+    */
+    sliderEndHits?: number;
+    /**
     * Specify the amount of gekis of a play.
     *
     * Only relevant for osu!mania for which it repesents the amount of n320.
@@ -210,6 +222,15 @@ export interface PerformanceArgs extends DifficultyArgs {
     * Defaults to `HitResultPriority.BestCase`.
     */
     hitresultPriority?: HitResultPriority;
+    /**
+    * Whether the calculated attributes belong to an osu!lazer or osu!stable
+    *
+    * This affects internal accuracy calculation because lazer considers
+    * slider heads for accuracy whereas stable does not.
+    *
+    * Only relevant for osu!standard.
+    */
+    lazer?: boolean;
 }
 
 /**
@@ -231,6 +252,14 @@ export interface ScoreState {
     * Irrelevant for osu!mania.
     */
     maxCombo?: number;
+    /**
+    * Amount of successfully hit slider ticks and repeats.
+    */
+    sliderTickHits?: number;
+    /**
+    * Amount of successfully hit slider ends.
+    */
+    sliderEndHits?: number;
     /**
     * Amount of current gekis (n320 for osu!mania).
     */
@@ -676,6 +705,8 @@ export class Performance {
    * @returns {PerformanceAttributes}
    */
   calculate(args: MapOrAttributes): PerformanceAttributes;
+  SliderEndHits?: number;
+  SliderTickHits?: number;
   accuracy?: number;
   ar?: number;
   arWithMods?: boolean;
@@ -687,6 +718,7 @@ export class Performance {
   hitresultPriority?: HitResultPriority;
   hp?: number;
   hpWithMods?: boolean;
+  lazer: boolean;
   misses?: number;
   mods?: Object;
   n100?: number;
