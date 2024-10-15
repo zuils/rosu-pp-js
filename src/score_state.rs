@@ -29,6 +29,14 @@ export interface ScoreState {
     */
     maxCombo?: number;
     /**
+    * Amount of successfully hit slider ticks and repeats.
+    */
+    sliderTickHits?: number;
+    /**
+    * Amount of successfully hit slider ends.
+    */
+    sliderEndHits?: number;
+    /**
     * Amount of current gekis (n320 for osu!mania).
     */
     nGeki?: number;
@@ -59,6 +67,8 @@ impl JsScoreState {
     pub fn deserialize<'de, D: de::Deserializer<'de>>(d: D) -> Result<ScoreState, D::Error> {
         enum ScoreStateField {
             MaxCombo,
+            SliderTickHits,
+            SliderEndHits,
             NGeki,
             NKatu,
             N300,
@@ -79,6 +89,8 @@ impl JsScoreState {
             fn visit_str<E: de::Error>(self, v: &str) -> Result<Self::Value, E> {
                 match v {
                     "maxCombo" => Ok(ScoreStateField::MaxCombo),
+                    "sliderTickHits" => Ok(ScoreStateField::SliderTickHits),
+                    "sliderEndHits" => Ok(ScoreStateField::SliderEndHits),
                     "nGeki" => Ok(ScoreStateField::NGeki),
                     "nKatu" => Ok(ScoreStateField::NKatu),
                     "n300" => Ok(ScoreStateField::N300),
@@ -112,6 +124,8 @@ impl JsScoreState {
                 while let Some(key) = map.next_key()? {
                     match key {
                         ScoreStateField::MaxCombo => state.max_combo = map.next_value()?,
+                        ScoreStateField::SliderTickHits => state.slider_tick_hits = map.next_value()?,
+                        ScoreStateField::SliderEndHits => state.slider_end_hits = map.next_value()?,
                         ScoreStateField::NGeki => state.n_geki = map.next_value()?,
                         ScoreStateField::NKatu => state.n_katu = map.next_value()?,
                         ScoreStateField::N300 => state.n300 = map.next_value()?,
@@ -141,6 +155,8 @@ impl From<ScoreState> for JsScoreState {
         let set = |key, value: u32| obj_as_ext.set(util::static_str_to_js(key), value.into());
 
         set("maxCombo", state.max_combo);
+        set("sliderTickHits", state.slider_tick_hits);
+        set("sliderEndHits", state.slider_end_hits);
         set("nGeki", state.n_geki);
         set("nKatu", state.n_katu);
         set("n300", state.n300);
