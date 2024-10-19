@@ -49,7 +49,7 @@ impl JsPerformance {
             MapOrAttrs::Map(map_) => {
                 map = map_;
 
-                if self.args.lazer {
+                if let Some(_lazer) = self.args.lazer {
                   Performance::new(&map.inner).lazer(true)
                 } else {
                   Performance::new(&map.inner).lazer(false)
@@ -183,7 +183,7 @@ impl JsPerformance {
     }
 
     #[wasm_bindgen(setter)]
-    pub fn set_lazer(&mut self, lazer: bool) {
+    pub fn set_lazer(&mut self, lazer: Option<bool>) {
         self.args.lazer = lazer;
     }
 
