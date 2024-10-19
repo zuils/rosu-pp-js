@@ -157,6 +157,7 @@ export interface DifficultyArgs extends CommonArgs {
     * Only relevant for osu!catch.
     */
     hardrockOffsets?: boolean;
+    lazer?: boolean;
 }
 
 /**
@@ -718,7 +719,7 @@ export class Performance {
   hitresultPriority?: HitResultPriority;
   hp?: number;
   hpWithMods?: boolean;
-  lazer: boolean;
+  lazer?: boolean;
   misses?: number;
   mods?: Object;
   n100?: number;
