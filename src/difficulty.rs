@@ -123,4 +123,9 @@ impl JsDifficulty {
     pub fn set_hardrock_offsets(&mut self, hardrock_offsets: Option<bool>) {
         self.args.hardrock_offsets = hardrock_offsets;
     }
+
+    #[wasm_bindgen(setter = lazer)]
+    pub fn set_lazer(&mut self, lazer: Option<bool>) {
+        self.args.lazer = lazer;
+    }
 }

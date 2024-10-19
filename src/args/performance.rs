@@ -131,8 +131,7 @@ pub struct PerformanceArgs {
     pub misses: Option<u32>,
     #[serde(default, deserialize_with = "JsHitResultPriority::deserialize")]
     pub hitresult_priority: HitResultPriority,
-    #[serde(default)]
-    pub lazer: bool,
+    pub lazer: Option<bool>,
 }
 
 /// While generating remaining hitresults, decide how they should be distributed.
@@ -200,10 +199,8 @@ impl PerformanceArgs {
             perf = perf.misses(misses);
         }
 
-        if self.lazer {
-            perf = perf.lazer(true);
-        } else {
-            perf = perf.lazer(false);
+        if let Some(lazer) = self.lazer {
+            perf = perf.lazer(lazer);
         }
 
         let difficulty = DifficultyArgs {
@@ -219,6 +216,7 @@ impl PerformanceArgs {
             od_with_mods: self.od_with_mods,
             passed_objects: self.passed_objects,
             hardrock_offsets: self.hardrock_offsets,
+            lazer: self.lazer,
         };
 
         perf.hitresult_priority(self.hitresult_priority)
