@@ -49,10 +49,10 @@ impl JsPerformance {
             MapOrAttrs::Map(map_) => {
                 map = map_;
 
-                if let Some(_lazer) = self.args.lazer {
-                  Performance::new(&map.inner).lazer(true)
+                if let Some(lazer) = self.args.lazer {
+                  Performance::new(&map.inner).lazer(lazer)
                 } else {
-                  Performance::new(&map.inner).lazer(false)
+                  Performance::new(&map.inner)
                 }
             }
             MapOrAttrs::Attrs(attrs) => Performance::new(attrs),
@@ -147,12 +147,12 @@ impl JsPerformance {
         self.args.n_geki = n_geki;
     }
 
-    #[wasm_bindgen(setter = SliderTickHits)]
+    #[wasm_bindgen(setter = sliderTickHits)]
     pub fn set_slider_tick_hits(&mut self, slider_tick_hits: Option<u32>) {
         self.args.slider_tick_hits = slider_tick_hits;
     }
 
-    #[wasm_bindgen(setter = SliderEndHits)]
+    #[wasm_bindgen(setter = sliderEndHits)]
     pub fn set_slider_end_hits(&mut self, slider_end_hits: Option<u32>) {
         self.args.slider_end_hits = slider_end_hits;
     }
