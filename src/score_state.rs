@@ -140,7 +140,7 @@ impl JsScoreState {
         }
 
         const FIELDS: &[&str] = &[
-            "maxCombo", "nGeki", "nKatu", "n300", "n100", "n50", "misses",
+            "maxCombo", "nGeki", "nKatu", "n300", "n100", "n50", "misses", "sliderTickHits", "sliderEndHits",
         ];
 
         d.deserialize_struct("Object", FIELDS, ScoreStateVisitor)
