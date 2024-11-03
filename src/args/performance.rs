@@ -191,6 +191,14 @@ impl PerformanceArgs {
             perf = perf.n100(n100);
         }
 
+        if let Some(slider_end_hits) = self.slider_end_hits {
+            perf = perf.n_slider_ends(slider_end_hits)
+        }
+
+        if let Some(slider_tick_hits) = self.slider_tick_hits {
+            perf = perf.n_slider_ticks(slider_tick_hits)
+        }
+
         if let Some(n50) = self.n50 {
             perf = perf.n50(n50);
         }
