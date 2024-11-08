@@ -135,6 +135,11 @@ pub struct JsDifficultyAttributes {
     /// Only available for osu!taiko.
     #[wasm_bindgen(js_name = "okHitWindow", readonly)]
     pub ok_hit_window: Option<f64>,
+    /// The ratio of stamina difficulty from mono-color (single color) streams to total
+    /// stamina difficulty.
+    /// Only available for osu!taiko.
+    #[wasm_bindgen(js_name = "monoStaminaFactor", readonly)]
+    pub mono_stamina_factor: Option<f64>,
     /// Only available for osu!taiko.
     #[wasm_bindgen(js_name = "greatHitWindow", readonly)]
     pub great_hit_window: Option<f64>,
@@ -199,7 +204,8 @@ impl From<TaikoDifficultyAttributes> for JsDifficultyAttributes {
             max_combo,
             is_convert,
             great_hit_window,
-            ok_hit_window
+            ok_hit_window,
+            mono_stamina_factor
         } = attrs;
 
         Self {
@@ -212,6 +218,7 @@ impl From<TaikoDifficultyAttributes> for JsDifficultyAttributes {
             peak: Some(peak),
             great_hit_window: Some(great_hit_window),
             ok_hit_window: Some(ok_hit_window),
+            mono_stamina_factor: Some(mono_stamina_factor),
             max_combo,
             ..Self::default()
         }
@@ -311,6 +318,7 @@ impl TryFrom<JsDifficultyAttributes> for DifficultyAttributes {
             aim_difficult_strain_count, 
             speed_difficult_strain_count, 
             ok_hit_window, 
+            mono_stamina_factor,
             great_hit_window 
         } = attrs;
 
@@ -368,8 +376,8 @@ impl TryFrom<JsDifficultyAttributes> for DifficultyAttributes {
                 }
             }
             JsGameMode::Taiko => {
-                if let (Some(stamina), Some(rhythm), Some(color), Some(peak), Some(great_hit_window), Some(ok_hit_window)) =
-                    (stamina, rhythm, color, peak, great_hit_window, ok_hit_window)
+                if let (Some(stamina), Some(rhythm), Some(color), Some(peak), Some(great_hit_window), Some(ok_hit_window), Some(mono_stamina_factor)) =
+                    (stamina, rhythm, color, peak, great_hit_window, ok_hit_window, mono_stamina_factor)
                 {
                     return Ok(Self::Taiko(TaikoDifficultyAttributes {
                         stamina,
@@ -381,6 +389,7 @@ impl TryFrom<JsDifficultyAttributes> for DifficultyAttributes {
                         is_convert,
                         great_hit_window,
                         ok_hit_window,
+                        mono_stamina_factor
                     }));
                 }
             }
