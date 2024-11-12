@@ -81,6 +81,11 @@ pub struct JsDifficultyAttributes {
     /// Only available for osu!.
     #[wasm_bindgen(js_name = "nSpinners", readonly)]
     pub n_spinners: Option<u32>,
+    /// The amount of hold notes in the map.
+    /// 
+    /// Only available for osu!mania.
+    #[wasm_bindgen(js_name = "nHoldNotes", readonly)]
+    pub n_hold_notes: Option<u32>,
     /// The difficulty of the stamina skill.
     ///
     /// Only available for osu!taiko.
@@ -260,6 +265,7 @@ impl From<ManiaDifficultyAttributes> for JsDifficultyAttributes {
             n_objects,
             max_combo,
             is_convert,
+            n_hold_notes
         } = attrs;
 
         Self {
@@ -268,6 +274,7 @@ impl From<ManiaDifficultyAttributes> for JsDifficultyAttributes {
             is_convert,
             hit_window: Some(hit_window),
             n_objects: Some(n_objects),
+            n_hold_notes: Some(n_hold_notes),
             max_combo,
             ..Self::default()
         }
@@ -319,7 +326,8 @@ impl TryFrom<JsDifficultyAttributes> for DifficultyAttributes {
             speed_difficult_strain_count, 
             ok_hit_window, 
             mono_stamina_factor,
-            great_hit_window 
+            great_hit_window ,
+            n_hold_notes
         } = attrs;
 
         match mode {
@@ -408,13 +416,14 @@ impl TryFrom<JsDifficultyAttributes> for DifficultyAttributes {
                 }
             }
             JsGameMode::Mania => {
-                if let (Some(hit_window), Some(n_objects)) = (hit_window, n_objects) {
+                if let (Some(hit_window), Some(n_objects), Some(n_hold_notes)) = (hit_window, n_objects, n_hold_notes) {
                     return Ok(Self::Mania(ManiaDifficultyAttributes {
                         stars,
                         hit_window,
                         n_objects,
                         max_combo,
                         is_convert,
+                        n_hold_notes
                     }));
                 }
             }

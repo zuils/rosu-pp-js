@@ -70,9 +70,8 @@ source = "git+https://github.com/MaxOhn/rosu-map?branch=pp-update#9648993aaeab59
 
 [[package]]
 name = "rosu-mods"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d69daf02885f7477085403a6eada6215f44333c7b54355ea1c4e276a02263bde"
+version = "0.1.1"
+source = "git+https://github.com/MaxOhn/rosu-mods?branch=main#9e9169109bf696a08ef90403b277caa6ca8b96c5"
 dependencies = [
  "serde",
 ]
@@ -80,7 +79,7 @@ dependencies = [
 [[package]]
 name = "rosu-pp"
 version = "1.1.0"
-source = "git+https://github.com/MaxOhn/rosu-pp?branch=pp-update#9e4db4096e56809281b68cb983578a66590053b7"
+source = "git+https://github.com/MaxOhn/rosu-pp?branch=pp-update#d6d191622f7f22c6ff107c5ab62bd72b88995824"
 dependencies = [
  "rosu-map",
  "rosu-mods",
@@ -88,7 +87,7 @@ dependencies = [
 
 [[package]]
 name = "rosu-pp-js"
-version = "2.0.0-alpha.9"
+version = "2.0.0-alpha.10"
 dependencies = [
  "js-sys",
  "rosu-mods",
