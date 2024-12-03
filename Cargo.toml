@@ -1,6 +1,6 @@
 [package]
 name = "rosu-pp-js"
-version = "2.0.0-alpha.10"
+version = "2.0.1-alpha.10"
 edition = "2021"
 authors = ["MaxOhn <ohn.m@hotmail.de>"]
 license = "MIT"
@@ -15,7 +15,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 js-sys = "0.3.69"
 rosu-mods = { git = "https://github.com/MaxOhn/rosu-mods", branch = "main", features = ["serde"] }
-rosu-pp = { git = "https://github.com/MaxOhn/rosu-pp", branch = "pp-update" }
+rosu-pp = { git = "https://github.com/osuAkatsuki/akatsuki-pp-rs", branch = "main" }
 
 serde = { version = "1.0.197", features = ["derive"] }
 wasm-bindgen = "0.2.95"
