@@ -81,7 +81,7 @@ jobs:
       - name: Change name of package
         run: |
           cd extracted
-          sed -i 's/"name": "rosu-pp-js"/"name": "@kotrikd\/rosu-pp"/' package.json
+          sed -i 's/"name": "rosu-pp-js"/"name": "@osuAkatsuki\/rosu-pp-rs"/' package.json
 
       - name: Publish
         uses: JS-DevTools/npm-publish@v3
